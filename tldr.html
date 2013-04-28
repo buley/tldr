@@ -127,7 +127,9 @@
 <!-- Toolbar -->
 <template name="toolbar">
     <section id="toolbar" class="flex-box flex-box-orient-horizontal flex-box-flex-1">
-        <aside id="tldr-controls-spacer" class="flex-box-flex-1"></aside>
+        <section id="tldr-controls-spacer" class="flex-box-flex-1">
+            <h1 contenteditable id="tldr-controls-spacer-title" class='tldr-title'></h1>
+        </section>
         <nav id="tldr-controls-container" class="flex-box-flex-0">
            {{> controls}}
         </nav>

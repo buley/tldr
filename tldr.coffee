@@ -1,5 +1,4 @@
 # Stories
-Narratives = new Meteor.Collection("narratives");
 Stories = new Meteor.Collection("stories");
 Users = new Meteor.Collection("users");
 
@@ -10,13 +9,15 @@ Meteor.startup( () ->
     Meteor.subscribe( 'stories', () ->
       loadStory( id, (story) ->
         console.log('story loaded',story)
+        Session.setDefault('story', story );
+        $( '.tldr-title' ).text( story.title );
       )
       if true is isEditing()
         populateNarrative( id )
     )
   else if Meteor.isServer
     Meteor.publish( "stories", () ->
-      Stories.find({}, {fields: {token: 1, modified: 1}} )
+      Stories.find({}, {fields: { _id: 1, token: 1, modified: 1, narrative: 1, title: 'Story Title' }} )
     )
 )
 
@@ -48,6 +49,8 @@ getStory = (id) ->
 createStory = (id) ->
   story = Stories.insert(
     token: id
+    modified: new Date()
+    title: ''
   )
   if 'undefined' is typeof story then story = null
   else story = Stories.find( { token: id }).fetch()[ 0 ]
@@ -156,3 +159,11 @@ if Meteor.isClient
 
     Template.controls.events "click .tldr-button-media-cancel": ( e ) ->
       hideMedia()
+
+    Template.toolbar.events "keydown .tldr-title": ( e ) ->
+      story = Session.get('story');
+      story.title = e.srcElement.innerHTML
+      Stories.update( { _id: Session.get( 'story' )[ '_id' ] }, story )
+      Session.set('story',story)
+      console.log('udpated form', Session.get( 'story' ), story )
+
