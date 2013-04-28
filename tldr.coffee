@@ -221,6 +221,7 @@ if Meteor.isClient
     , () ->
       console.log('nasty')
       $( '.tldr-button-settings' ).removeClass( 'tldr-button-settings' ).addClass( 'tldr-button-settings-cancel').text( 'checkmark' ).addClass( 'tldr-button-green')
+      $("#tldr-middle-content-panel").fadeIn()
     )
 
   hideSettings = () ->
@@ -230,6 +231,7 @@ if Meteor.isClient
       'margin-right': '-3000px'
     , () ->
       $( '.tldr-button-settings-cancel' ).addClass( 'tldr-button-settings' ).removeClass( 'tldr-button-settings-cancel').text( 'settings' ).removeClass('tldr-button-green')
+      $("#tldr-middle-content-panel").fadeOut()
     )
   if true is isEditing()
 

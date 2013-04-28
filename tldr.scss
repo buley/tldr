@@ -1465,16 +1465,26 @@ html {
   background: transparent;
 }
 
+#tldr-middle-content-area {
+  //left: -3000px;
+  //position: absolute;
+  //width: 100%;
+}
+
+#tldr-middle-content-panel {
+  margin-left: -1000px;
+  margin: 0px 16px 0 16px;
+}
 #tldr-middle-content-container {
   -moz-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background: #aeaeae;
-  margin: 0 16px 0 16px;
-  //margin-left: -1000px;
-  z-index: 5;
-  position: relative;
+  z-index: 3;
   padding: 1px;
-
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
 #tldr-middle-content {
