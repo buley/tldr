@@ -1,43 +1,100 @@
-doAnim = (node, prop, fn) ->
-    $( node ).animate prop,
-      duration: 300,
-      specialEasing:
-        width: 'linear'
-        height: 'easeOutBounce'
-      complete: () ->
-        fn() if 'function' is typeof fn
 
 if Meteor.isClient
 
-  template.controls.events "click .tldr-button-edit": ( e ) ->
-    doanim( $("#tldr-panel-container"),
-      'margin-right': '0px'
-    , () ->
-      $( e.srcelement ).removeclass( 'tldr-button-edit' ).addclass( 'tldr-button-edit-cancel').addclass('ss-writingdisabled').removeclass('ss-write')
-    )
+  doAnim = (node, prop, fn) ->
+      $( node ).animate prop,
+        duration: 300,
+        specialEasing:
+          width: 'linear'
+          height: 'easeOutBounce'
+        complete: () ->
+          fn() if 'function' is typeof fn
 
-  template.controls.events "click .tldr-button-edit-cancel": ( e ) ->
-    doanim( $("#tldr-panel-container"),
+  # Panel
+
+  hidePanel = () ->
+    node = $("#tldr-panel-container")
+    node.hide()
+    doAnim( node,
       'margin-right': '-1000px'
     , () ->
-      $( e.srcelement ).addclass( 'tldr-button-edit' ).removeclass( 'tldr-button-edit-cancel').removeclass('ss-writingdisabled').addclass('ss-write')
+      $( '.tldr-button-edit-cancel' ).addClass( 'tldr-button-edit' ).removeClass( 'tldr-button-edit-cancel').removeClass('ss-writingdisabled').addClass('ss-write')
     )
 
-  template.controls.events "click .tldr-button-narrative": ( e ) ->
-    console.log('donarr')
-    doanim( $("#tldr-narrative-container"),
+  showPanel = () ->
+    node = $("#tldr-panel-container")
+    node.show()
+    doAnim( node,
       'margin-right': '0px'
     , () ->
-      $( e.srcelement ).removeclass( 'tldr-button-narrative' ).addclass( 'tldr-button-narative-cancel').addclass('ss-columns').removeclass('ss-rows')
+      $( '.tldr-button-edit' ).removeClass( 'tldr-button-edit' ).addClass( 'tldr-button-edit-cancel').addClass('ss-writingdisabled').removeClass('ss-write')
     )
 
-  template.controls.events "click .tldr-button-narrative-cancel": ( e ) ->
-    console.log('ybdonarr')
-    doanim( $("#tldr-narrative-container"),
-      'margin-right': '-1000px'
+  # Narrative
+
+  showNarrative = () ->
+    node = $("#tldr-narrative-container")
+    node.show()
+    $("#tldr-panel-container").hide()
+    doAnim( node,
+      'margin-right': '0px'
     , () ->
-      $( e.srcelement ).addclass( 'tldr-button-edit' ).removeclass( 'tldr-button-edit-cancel').removeclass('ss-columns').addclass('ss-rows')
+      $( '.tldr-button-narrative' ).removeClass( 'tldr-button-narrative' ).addClass( 'tldr-button-narrative-cancel').text( 'notebook' )
     )
+
+  hideNarrative = () ->
+    node = $("#tldr-narrative-container")
+    node.hide()
+    doAnim( node,
+      'margin-right': '-2000px'
+    , () ->
+      $( '.tldr-button-narrative-cancel' ).addClass( 'tldr-button-narrative' ).removeClass( 'tldr-button-narrative-cancel').text('openbook')
+    )
+
+  # Media
+
+  showMedia = () ->
+    node = $("#tldr-media-container")
+    node.show()
+    doAnim( node,
+      'margin-right': '0px'
+    , () ->
+      console.log('nasty')
+      $( '.tldr-button-media' ).removeClass( 'tldr-button-media' ).addClass( 'tldr-button-media-cancel').text( 'eject' )
+    )
+
+  hideMedia = () ->
+    node = $("#tldr-media-container")
+    node.hide()
+    doAnim( node,
+      'margin-right': '-2000px'
+    , () ->
+      $( '.tldr-button-media-cancel' ).addClass( 'tldr-button-media' ).removeClass( 'tldr-button-media-cancel').text( 'images' )
+    )
+
+  Template.controls.events "click .tldr-button-edit": ( e ) ->
+    showPanel()
+    hideNarrative()
+    hideMedia()
+
+  Template.controls.events "click .tldr-button-edit-cancel": ( e ) ->
+    hidePanel()
+
+  Template.controls.events "click .tldr-button-narrative": ( e ) ->
+    showNarrative()
+    hidePanel()
+    hideMedia()
+
+  Template.controls.events "click .tldr-button-narrative-cancel": ( e ) ->
+    hideNarrative()
+
+  Template.controls.events "click .tldr-button-media": ( e ) ->
+    showMedia()
+    hideNarrative()
+    hidePanel()
+
+  Template.controls.events "click .tldr-button-media-cancel": ( e ) ->
+    hideMedia()
 
 if Meteor.isServer
   Meteor.startup ->

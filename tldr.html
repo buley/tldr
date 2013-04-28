@@ -68,16 +68,19 @@
 <!-- Right -->
 <template name="right">
     <section id="tldr-right" class="flex-box-flex-0">
-        {{> panel}}
-        {{> narrative}}
+        <section id="tldr-flyouts">
+            {{> panel}}
+            {{> narrative}}
+            {{> media}}
+        <section>
     </section>
 </template>
 
 
 <!-- Panel -->
 <template name="panel">
-    <section id="tldr-panel-container" class="">
-        <section id="tldr-panel" class="">
+    <section id="tldr-panel-container">
+        <section id="tldr-panel">
             {{> play-button}}
             {{> pause-button}}
             {{> stop-button}}
@@ -87,12 +90,20 @@
 
 
 <!-- Narrative -->
-<template name="narrative">
-    <section id="tldr-narrative-container" class="">
-        <section id="tldr-narrative class=">
+<template name="media">
+    <section id="tldr-media-container">
+        <section id="tldr-media">
             {{> image-button}}
             {{> video-button}}
             {{> text-button}}
+        </section>
+    </section>
+</template>
+
+<!-- Narrative -->
+<template name="narrative">
+    <section id="tldr-narrative-container">
+        <section id="tldr-narrative">
         </section>
     </section>
 </template>
@@ -112,6 +123,7 @@
     <nav id="tldr-controls" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
         {{> edit-button}}
         {{> narrative-button}}
+        {{> media-button}}
     </nav>
 </template>
 
@@ -177,7 +189,7 @@
     <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
-            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
             <nav class="flex-box-flex-1 ss-write tldr-button-edit tldr-button"></nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
@@ -186,22 +198,18 @@
 </template>
 
 
-<!-- Narrative Button -->
-<template name="narrative-button">
+<!-- Media Button -->
+<template name="media-button">
     <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
-            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button">rows</nav>
+            <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-media tldr-button">images</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
     </aside>
 </template>
-
-
-
-
 
 
 <!-- Image Button -->
@@ -210,7 +218,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-image tldr-panel-button">image</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-image tldr-panel-button">camera</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -239,6 +247,20 @@
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
             <nav class="flex-box-flex-1 ss-icon tldr-button-text tldr-panel-button">text</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Narrative Button -->
+<template name="narrative-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button">openbook</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>

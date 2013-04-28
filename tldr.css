@@ -1377,9 +1377,39 @@ html {
   border-radius: 10px 0 0 10px;
   background: #aeaeae;
   padding: 1px;
-  margin-right: -1000px; }
+  margin-right: -1000px;
+  z-index: 3;
+  float: right; }
 
 #tldr-panel {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #eeeeee; }
+
+#tldr-narrative-container {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #aeaeae;
+  padding: 1px;
+  margin-right: -2000px;
+  z-index: 4;
+  float: left; }
+
+#tldr-narrative {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #eeeeee; }
+
+#tldr-media-container {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #aeaeae;
+  padding: 1px;
+  margin-right: -2000px;
+  z-index: 4;
+  float: left; }
+
+#tldr-media {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
   background: #eeeeee; }
