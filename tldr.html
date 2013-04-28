@@ -70,7 +70,7 @@
     <section id="tldr-right" class="flex-box-flex-0">
         <section id="tldr-flyouts">
             {{> media}}
-            {{> narrative}}
+            {{> narratives}}
             {{> panel}}
         </section>
     </section>
@@ -101,27 +101,21 @@
 </template>
 
 <!-- Narrative -->
-<template name="narrative">
+<template name="narratives">
     <section id="tldr-narrative-container">
         <ul id="tldr-narrative">
-           <li>
-               <span class='tldr-narrative-icon ss-star'></span>
-               <span class='tldr-narrative-text'>Item 1</span>
-           </li>
-           <li>
-               <span class='tldr-narrative-icon ss-star'></span>
-               <span class='tldr-narrative-text'>Item 2</span>
-           </li>
-           <li>
-               <span class='tldr-narrative-icon ss-star'></span>
-               <span class='tldr-narrative-text'>Item 3</span>
-           </li>
-           <li>
-               <span class='tldr-narrative-icon ss-star'></span>
-               <span class='tldr-narrative-text'>Item 4</span>
-           </li>
+           {{#each narratives}}
+            {{> narrative}}
+           {{/each}}
         </ul>
     </section>
+</template>
+
+<template name="narrative">
+   <li>
+       <span class='tldr-narrative-icon ss-star'></span>
+       <span class='tldr-narrative-text'>Item 2</span>
+   </li>
 </template>
 
 <!-- Toolbar -->
@@ -145,13 +139,45 @@
     </nav>
 </template>
 
-<!-- Footer -->
+<!-- footer -->
 <template name="footer">
-    <footer id="tldr-footer" class="flex-box-flex-0">
-      {{> copyright}}
+    <footer id="tldr-footer" class="flex-box-flex-0 flex-box flex-box-orient-vertical">
+        {{> scrubber}}
     </footer>
 </template>
 
+<!-- Scrubber -->
+<template name="scrubber">
+    <section id="tldr-scrubber-container" class="flex-box flex-box-orient-horizontal">
+        <nav id="tldr-scrubber" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
+            <section id="tldr-scrubber-bar-left-container" class="flex-box-flex-0 flex-box flex-box-orient-vertical">
+               <div id="tldr-scrubber-bar-left-above" class="flex-box-flex-1"></div>
+               <div id="tldr-scrubber-bar-left" class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+                <div id="tldr-scrubber-bar-left-loaded" class="flex-box-flex-0"></div>
+                <div id="tldr-scrubber-bar-left-unloaded" class="flex-box-flex-1"></div>
+               </div>
+               <div id="tldr-scrubber-bar-left-below" class="flex-box-flex-1"></div>
+            </section>
+            <section id="tldr-scrubber-knob-container" class="flex-box-flex-0 flex-box flex-box-orient-vertical">
+               <div id="tldr-scrubber-knob-above" class="flex-box-flex-1"></div>
+               <div id="tldr-scrubber-knob" class="flex-box-flex-0"></div>
+               <div id="tldr-scrubber-knob-below" class="flex-box-flex-1"></div>
+            </section>
+            <section id="tldr-scrubber-bar-right-container" class="flex-box-flex-1 flex-box flex-box-orient-vertical">
+               <div id="tldr-scrubber-bar-right-above" class="flex-box-flex-1"></div>
+               <div id="tldr-scrubber-bar-right" class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+                <div id="tldr-scrubber-bar-right-loaded" class="flex-box-flex-0"></div>
+                <div id="tldr-scrubber-bar-right-unloaded" class="flex-box-flex-1"></div>
+               </div>
+
+               <div id="tldr-scrubber-bar-right-below" class="flex-box-flex-1"></div>
+            </section>
+        </nav>
+        <aside id="tldr-scrubber-controls" class="flex-box-flex-0">
+            <section class="tldr-button-footer ss-icon">bookmark</section>
+        </aside>
+    </section>
+</template>
 
 <!-- Copyright -->
 <template name="copyright">

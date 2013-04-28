@@ -6,6 +6,7 @@ Meteor.startup( () ->
   if Meteor.isClient
     id = currentId()
     Session.setDefault('token', id );
+
     Meteor.subscribe( 'stories', () ->
       loadStory( id, (story) ->
         console.log('story loaded',story)
@@ -17,7 +18,7 @@ Meteor.startup( () ->
     )
   else if Meteor.isServer
     Meteor.publish( "stories", () ->
-      Stories.find({}, {fields: { _id: 1, token: 1, modified: 1, narrative: 1, title: 'Story Title' }} )
+      Stories.find({}, {fields: { _id: 1, token: 1, modified: 1, narratives: 1, title: 'Story Title' }} )
     )
 )
 
@@ -51,6 +52,7 @@ createStory = (id) ->
     token: id
     modified: new Date()
     title: ''
+    narratives: []
   )
   if 'undefined' is typeof story then story = null
   else story = Stories.find( { token: id }).fetch()[ 0 ]
@@ -167,3 +169,5 @@ if Meteor.isClient
       Session.set('story',story)
       console.log('udpated form', Session.get( 'story' ), story )
 
+      Template.leaderboard.narratives = () ->
+        Session.get('story').narratives

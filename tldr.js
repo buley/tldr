@@ -28,7 +28,7 @@
             _id: 1,
             token: 1,
             modified: 1,
-            narrative: 1,
+            narratives: 1,
             title: 'Story Title'
           }
         });
@@ -82,7 +82,8 @@
     story = Stories.insert({
       token: id,
       modified: new Date(),
-      title: ''
+      title: '',
+      narratives: []
     });
     if ('undefined' === typeof story) {
       story = null;
@@ -224,7 +225,10 @@
             _id: Session.get('story')['_id']
           }, story);
           Session.set('story', story);
-          return console.log('udpated form', Session.get('story'), story);
+          console.log('udpated form', Session.get('story'), story);
+          return Template.leaderboard.narratives = function() {
+            return Session.get('story').narratives;
+          };
         }
       });
     }
