@@ -1566,8 +1566,8 @@ html {
 
 .tldr-controls-spacer-title-icon {
   color: #cccccc;
-  font-size: 32px;
-  padding: 16px 16px 0 16px;
+  font-size: 40px;
+  padding: 14px 0px 0 14px;
 }
 
 .tldr-panel-button {
@@ -1575,11 +1575,19 @@ html {
   padding: 10px;
   color: #000000;
 }
-
+#tldr-controls-container {
+  margin: 16px 0 16px 0px;
+}
+#tldr-controls-spacer {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
 .tldr-title {
   color: #cdcdcd;
   outline: 0px solid transparent;
   font-size: 32px;
+  box-sizing: border-box;
   padding: 8px 16px 8px 16px;
   margin: 8px 0px 8px 0px;
   background-color: transparent;

@@ -13,10 +13,15 @@
       Session.setDefault('token', id);
       return Meteor.subscribe('stories', function() {
         loadStory(id, function(story) {
+          var grid, media, videos;
           console.log('story loaded', story.url);
           Session.setDefault('story', story);
           $('.tldr-title').val(story.url);
-          return createGrid(story.url);
+          grid = createGrid(story.url);
+          media = grid.sources();
+          videos = media.videos;
+          console.log('media', media);
+          return console.log('video', media[story.url]);
         });
         if (true === isEditing()) {
           return populateNarrative(id);
@@ -106,13 +111,13 @@
     };
     createGrid = function(url) {
       var hexgrid;
-      return hexgrid = new Hexgrid({
+      hexgrid = new Hexgrid({
         id: "tldr-canvases",
         side: 10,
         fill: "transparent",
         line: {
           width: 1,
-          color: 'rgba(0,0,0,.1)'
+          color: 'rgba(0,0,0,.05)'
         },
         video: {
           src: url,
@@ -137,6 +142,7 @@
           return hex = obj.data;
         }
       });
+      return hexgrid;
     };
     doAnim = function(node, prop, fn) {
       return $(node).animate(prop, {

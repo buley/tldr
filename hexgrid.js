@@ -457,8 +457,14 @@
         }
         this.run();
         if (null !== cache) {
-          return cache();
+          cache();
         }
+        return this;
+      };
+      Public.prototype.sources = function() {
+        return {
+          videos: videos
+        };
       };
       Public.prototype.run = function() {
         that = this;

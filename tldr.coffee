@@ -12,7 +12,13 @@ Meteor.startup( () ->
         console.log('story loaded',story.url)
         Session.setDefault('story', story );
         $( '.tldr-title' ).val( story.url );
-        createGrid( story.url )
+        grid = createGrid( story.url )
+        media = grid.sources()
+        videos = media.videos
+        console.log('media',media)
+        video = videos[ story.url ]
+        console.log('video',video)
+
       )
       if true is isEditing()
         populateNarrative( id )
@@ -75,7 +81,7 @@ if Meteor.isClient
       fill: "transparent"
       line:
         width: 1
-        color: 'rgba(0,0,0,.1)'
+        color: 'rgba(0,0,0,.05)'
       video:
         src: url
         x: 0
@@ -97,9 +103,7 @@ if Meteor.isClient
         api = obj.api
         hex = obj.data
     )
-
-
-  #
+    hexgrid
 
   doAnim = (node, prop, fn) ->
       $( node ).animate prop,

@@ -471,6 +471,10 @@ if Meteor.isClient then window.Hexgrid = (->
       this[attr] = args[attr]  if args.hasOwnProperty(attr)
     @run()
     cache()  if null isnt cache
+    @
+
+  Public::sources = ->
+    { videos: videos }
 
   Public::run = ->
     that = this
