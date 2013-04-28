@@ -1372,6 +1372,9 @@ html {
   z-index: 1;
   background: #000000; }
 
+#tldr-flyouts {
+  padding: 20px 0 20px 0; }
+
 #tldr-panel-container {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
@@ -1439,12 +1442,12 @@ html {
   width: 42px; }
 
 .tldr-logo {
-  font-size: 32px;
+  font-size: 24px;
   margin-left: 8px; }
 
 .tldr-button {
-  font-size: 32px;
-  padding: 10px;
+  font-size: 24px;
+  margin-right: 10px;
   color: #ffffff; }
 
 .tldr-button-footer {
@@ -1452,20 +1455,41 @@ html {
   font-size: 32px;
   padding: 0 10px 0 10px; }
 
+.tldr-button-header {
+  color: #ffffff;
+  font-size: 32px;
+  padding: 16px 16px 0 16px; }
+
+.tldr-controls-spacer-title-icon {
+  color: #cccccc;
+  font-size: 32px;
+  padding: 16px 16px 0 16px; }
+
 .tldr-panel-button {
   font-size: 24px;
   padding: 10px;
   color: #000000; }
 
 .tldr-title {
-  color: white;
+  color: #cdcdcd;
+  outline: 0px solid transparent;
   font-size: 32px;
-  padding: 0 10px 0 10px; }
+  padding: 8px 16px 8px 16px;
+  margin: 8px 0px 8px 0px;
+  background-color: transparent;
+  border-color: transparent;
+  width: 100%; }
 
 #tldr-scrubber-bar {
   position: absolute;
   width: 100%;
   height: 20px; }
+
+#tldr-scrubber-controls-right {
+  margin-left: 10px; }
+
+#tldr-scrubber-controls-left {
+  margin-left: 10px; }
 
 #tldr-scrubber-knob {
   width: 16px;

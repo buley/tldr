@@ -13,9 +13,9 @@
       Session.setDefault('token', id);
       return Meteor.subscribe('stories', function() {
         loadStory(id, function(story) {
-          console.log('story loaded', story);
+          console.log('story loaded', story.url);
           Session.setDefault('story', story);
-          return $('.tldr-title').text(story.title);
+          return $('.tldr-title').val(story.url);
         });
         if (true === isEditing()) {
           return populateNarrative(id);
@@ -29,7 +29,7 @@
             token: 1,
             modified: 1,
             narratives: 1,
-            title: 'Story Title'
+            url: 'https://s3.amazonaws.com/hazy.co/sky.mov'
           }
         });
       });
@@ -82,7 +82,7 @@
     story = Stories.insert({
       token: id,
       modified: new Date(),
-      title: '',
+      url: 'https://s3.amazonaws.com/hazy.co/sky.mov',
       narratives: []
     });
     if ('undefined' === typeof story) {
@@ -166,7 +166,7 @@
         'margin-right': '0px'
       }, function() {
         console.log('nasty');
-        return $('.tldr-button-media').removeClass('tldr-button-media').addClass('tldr-button-media-cancel').text('eject');
+        return $('.tldr-button-media').removeClass('tldr-button-media').addClass('tldr-button-media-cancel').text('writingdisabled');
       });
     };
     hideMedia = function() {
@@ -176,7 +176,7 @@
       return doAnim(node, {
         'margin-right': '-2000px'
       }, function() {
-        return $('.tldr-button-media-cancel').addClass('tldr-button-media').removeClass('tldr-button-media-cancel').text('images');
+        return $('.tldr-button-media-cancel').addClass('tldr-button-media').removeClass('tldr-button-media-cancel').text('write');
       });
     };
     if (true === isEditing()) {
@@ -218,19 +218,48 @@
       });
       Template.toolbar.events({
         "keydown .tldr-title": function(e) {
-          var story;
+          var regex, story, url;
           story = Session.get('story');
-          story.title = e.srcElement.innerHTML;
+          url = $("#tldr-controls-spacer-title").val();
+          story.url = url;
           Stories.update({
             _id: Session.get('story')['_id']
           }, story);
           Session.set('story', story);
-          console.log('udpated form', Session.get('story'), story);
-          return Template.leaderboard.narratives = function() {
-            return Session.get('story').narratives;
-          };
+          regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+          console.log('keydown: ' + url, url.match(regex));
+          if (null === url.match(regex)) {
+            $('.tldr-controls-spacer-title-icon').css('color', '#660000');
+            return $('#tldr-controls-spacer-title').css('color', '#660000');
+          } else {
+            $('.tldr-controls-spacer-title-icon').css('color', 'rgb(255, 255, 255)');
+            return $('#tldr-controls-spacer-title').css('color', 'rgb(255, 255, 255)');
+          }
         }
       });
+      Template.toolbar.events({
+        "focusin .tldr-title": function(e) {
+          if ('rgb(204, 204, 204)' === $('.tldr-controls-spacer-title-icon').css('color')) {
+            $('.tldr-controls-spacer-title-icon').css('color', 'rgb(255, 255, 255)');
+            return $('#tldr-controls-spacer-title').css('color', 'rgb(255, 255, 255)');
+          }
+        }
+      });
+      Template.toolbar.events({
+        "focusout .tldr-title": function(e) {
+          if ('rgb(255, 255, 255)' === $('.tldr-controls-spacer-title-icon').css('color')) {
+            $('.tldr-controls-spacer-title-icon').css('color', 'rgb(204, 204, 204)');
+            return $('#tldr-controls-spacer-title').css('color', 'rgb(204, 204, 204)');
+          }
+        }
+      });
+      Template.narratives.narratives = function() {
+        if ('undefined' !== typeof Session.get('story')) {
+          return Session.get('story')['narratives'];
+        } else {
+          return [];
+        }
+      };
     }
   }
 

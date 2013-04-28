@@ -9,16 +9,16 @@ Meteor.startup( () ->
 
     Meteor.subscribe( 'stories', () ->
       loadStory( id, (story) ->
-        console.log('story loaded',story)
+        console.log('story loaded',story.url)
         Session.setDefault('story', story );
-        $( '.tldr-title' ).text( story.title );
+        $( '.tldr-title' ).val( story.url );
       )
       if true is isEditing()
         populateNarrative( id )
     )
   else if Meteor.isServer
     Meteor.publish( "stories", () ->
-      Stories.find({}, {fields: { _id: 1, token: 1, modified: 1, narratives: 1, title: 'Story Title' }} )
+      Stories.find({}, {fields: { _id: 1, token: 1, modified: 1, narratives: 1, url: 'https://s3.amazonaws.com/hazy.co/sky.mov' }} )
     )
 )
 
@@ -51,7 +51,7 @@ createStory = (id) ->
   story = Stories.insert(
     token: id
     modified: new Date()
-    title: ''
+    url: 'https://s3.amazonaws.com/hazy.co/sky.mov'
     narratives: []
   )
   if 'undefined' is typeof story then story = null
@@ -125,7 +125,7 @@ if Meteor.isClient
       'margin-right': '0px'
     , () ->
       console.log('nasty')
-      $( '.tldr-button-media' ).removeClass( 'tldr-button-media' ).addClass( 'tldr-button-media-cancel').text( 'eject' )
+      $( '.tldr-button-media' ).removeClass( 'tldr-button-media' ).addClass( 'tldr-button-media-cancel').text( 'writingdisabled' )
     )
 
   hideMedia = () ->
@@ -134,7 +134,7 @@ if Meteor.isClient
     doAnim( node,
       'margin-right': '-2000px'
     , () ->
-      $( '.tldr-button-media-cancel' ).addClass( 'tldr-button-media' ).removeClass( 'tldr-button-media-cancel').text( 'images' )
+      $( '.tldr-button-media-cancel' ).addClass( 'tldr-button-media' ).removeClass( 'tldr-button-media-cancel').text( 'write' )
     )
 
   if true is isEditing()
@@ -163,11 +163,30 @@ if Meteor.isClient
       hideMedia()
 
     Template.toolbar.events "keydown .tldr-title": ( e ) ->
-      story = Session.get('story');
-      story.title = e.srcElement.innerHTML
+      story = Session.get('story')
+      url = $( "#tldr-controls-spacer-title").val()
+      story.url = url
       Stories.update( { _id: Session.get( 'story' )[ '_id' ] }, story )
       Session.set('story',story)
-      console.log('udpated form', Session.get( 'story' ), story )
+      regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+      console.log('keydown: ' + url,url.match(regex))
 
-      Template.leaderboard.narratives = () ->
-        Session.get('story').narratives
+      if null is url.match( regex )
+        $( '.tldr-controls-spacer-title-icon').css('color', '#660000' )
+        $( '#tldr-controls-spacer-title').css('color', '#660000' )
+      else
+        $( '.tldr-controls-spacer-title-icon').css('color', 'rgb(255, 255, 255)')
+        $( '#tldr-controls-spacer-title').css('color', 'rgb(255, 255, 255)')
+
+    Template.toolbar.events "focusin .tldr-title": ( e ) ->
+      if ( 'rgb(204, 204, 204)' is $( '.tldr-controls-spacer-title-icon').css('color' ) )
+        $( '.tldr-controls-spacer-title-icon').css('color', 'rgb(255, 255, 255)')
+        $( '#tldr-controls-spacer-title').css('color', 'rgb(255, 255, 255)')
+
+    Template.toolbar.events "focusout .tldr-title": ( e ) ->
+      if ( 'rgb(255, 255, 255)' is $( '.tldr-controls-spacer-title-icon').css('color' ) )
+        $( '.tldr-controls-spacer-title-icon').css('color', 'rgb(204, 204, 204)' )
+        $( '#tldr-controls-spacer-title').css('color', 'rgb(204, 204, 204)' )
+
+    Template.narratives.narratives = () ->
+      if ( 'undefined' isnt typeof Session.get('story') ) then Session.get('story')[ 'narratives' ] else []

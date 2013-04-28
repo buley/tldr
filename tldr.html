@@ -1,5 +1,5 @@
 <head>
-  <title>tldr.info - a storytelling layer for web video</title>
+  <title>tldr.info - a narrative layer for web video</title>
 </head>
 
 <body>
@@ -21,7 +21,6 @@
 <!-- header -->
 <template name="header">
     <header class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
-      {{> logo}}
       {{> toolbar}}
     </header>
 </template>
@@ -121,8 +120,13 @@
 <!-- Toolbar -->
 <template name="toolbar">
     <section id="toolbar" class="flex-box flex-box-orient-horizontal flex-box-flex-1">
-        <section id="tldr-controls-spacer" class="flex-box-flex-1">
-            <h1 contenteditable id="tldr-controls-spacer-title" class='tldr-title'></h1>
+        <section id="tldr-controls-spacer" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
+            <section class="flex-box-flex-0">
+                <div class="tldr-controls-spacer-title-icon ss-link flex-box-flex-0"></div>
+            </section>
+            <section class="flex-box-flex-1">
+                <input contenteditable id="tldr-controls-spacer-title" class='tldr-title'></input>
+            </section>
         </section>
         <nav id="tldr-controls-container" class="flex-box-flex-0">
            {{> controls}}
@@ -133,7 +137,6 @@
 <!-- Controls -->
 <template name="controls">
     <nav id="tldr-controls" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
-        {{> edit-button}}
         {{> narrative-button}}
         {{> media-button}}
     </nav>
@@ -149,6 +152,9 @@
 <!-- Scrubber -->
 <template name="scrubber">
     <section id="tldr-scrubber-container" class="flex-box flex-box-orient-horizontal">
+        <aside id="tldr-scrubber-controls-left" class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+            {{> play-button}}
+        </aside>
         <nav id="tldr-scrubber" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
             <section id="tldr-scrubber-bar-left-container" class="flex-box-flex-0 flex-box flex-box-orient-vertical">
                <div id="tldr-scrubber-bar-left-above" class="flex-box-flex-1"></div>
@@ -169,12 +175,11 @@
                 <div id="tldr-scrubber-bar-right-loaded" class="flex-box-flex-0"></div>
                 <div id="tldr-scrubber-bar-right-unloaded" class="flex-box-flex-1"></div>
                </div>
-
                <div id="tldr-scrubber-bar-right-below" class="flex-box-flex-1"></div>
             </section>
         </nav>
-        <aside id="tldr-scrubber-controls" class="flex-box-flex-0">
-            <section class="tldr-button-footer ss-icon">bookmark</section>
+        <aside id="tldr-scrubber-controls-right" class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+            {{> bookmark-button}}
         </aside>
     </section>
 </template>
@@ -193,7 +198,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-play tldr-panel-button">play</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-play tldr-button">play</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -207,7 +212,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-stop tldr-panel-button">stop</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-stop tldr-button">stop</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -220,12 +225,13 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-pause tldr-panel-button">pause</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-pause tldr-button">pause</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
     </aside>
 </template>
+
 
 
 <!-- Edit Button -->
@@ -234,12 +240,27 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-write tldr-button-edit tldr-button"></nav>
+            <nav class="flex-box-flex-1 ss-write tldr-button-edit tldr-button-header"></nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
     </aside>
 </template>
+
+
+<!-- Bookmark Button -->
+<template name="bookmark-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-bookmark tldr-button">bookmark</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
 
 
 <!-- Media Button -->
@@ -248,7 +269,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-media tldr-button">images</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-media tldr-button-header">write</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -262,7 +283,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-image tldr-panel-button">camera</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-image tldr-panel-button">image</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -304,7 +325,7 @@
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button">openbook</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button-header">openbook</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
