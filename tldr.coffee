@@ -220,7 +220,7 @@ if Meteor.isClient
       'margin-right': '0px'
     , () ->
       console.log('nasty')
-      $( '.tldr-button-settings' ).removeClass( 'tldr-button-settings' ).addClass( 'tldr-button-settings-cancel').text( 'checkmark' )
+      $( '.tldr-button-settings' ).removeClass( 'tldr-button-settings' ).addClass( 'tldr-button-settings-cancel').text( 'checkmark' ).addClass( 'tldr-button-green')
     )
 
   hideSettings = () ->
@@ -229,7 +229,7 @@ if Meteor.isClient
     doAnim( node,
       'margin-right': '-3000px'
     , () ->
-      $( '.tldr-button-settings-cancel' ).addClass( 'tldr-button-settings' ).removeClass( 'tldr-button-settings-cancel').text( 'settings' )
+      $( '.tldr-button-settings-cancel' ).addClass( 'tldr-button-settings' ).removeClass( 'tldr-button-settings-cancel').text( 'settings' ).removeClass('tldr-button-green')
     )
   if true is isEditing()
 

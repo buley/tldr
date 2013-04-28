@@ -268,7 +268,7 @@
         'margin-right': '0px'
       }, function() {
         console.log('nasty');
-        return $('.tldr-button-settings').removeClass('tldr-button-settings').addClass('tldr-button-settings-cancel').text('checkmark');
+        return $('.tldr-button-settings').removeClass('tldr-button-settings').addClass('tldr-button-settings-cancel').text('checkmark').addClass('tldr-button-green');
       });
     };
     hideSettings = function() {
@@ -278,7 +278,7 @@
       return doAnim(node, {
         'margin-right': '-3000px'
       }, function() {
-        return $('.tldr-button-settings-cancel').addClass('tldr-button-settings').removeClass('tldr-button-settings-cancel').text('settings');
+        return $('.tldr-button-settings-cancel').addClass('tldr-button-settings').removeClass('tldr-button-settings-cancel').text('settings').removeClass('tldr-button-green');
       });
     };
     if (true === isEditing()) {

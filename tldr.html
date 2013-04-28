@@ -35,8 +35,8 @@
             <aside id="tldr-logo-area-left" class="flex-box-flex-0"></aside>
             <nav class="tldr-logo flex-box-flex-1 flex-box flex-box-orient-vertical">
                 <!--<aside id="tldr-logo-area-top" class="flex-box-flex-1 serif-smallcaps">POWERED BY</aside>-->
-                <aside id="tldr-logo-area-middle" class="flex-box-flex-1 serif">LIVE</aside>
-                <aside id="tldr-logo-area-bottom" class="flex-box-flex-1 sans-serif">VIDEO.CO</aside>
+                <aside id="tldr-logo-area-middle" class="flex-box-flex-1 sans-serif-condensed">LIVE</aside>
+                <aside id="tldr-logo-area-bottom" class="flex-box-flex-1 sans-serif-condensed">VIDEO.CO</aside>
             </nav>
             <aside id="tldr-logo-area-right" class="flex-box-flex-0"></aside>
         </aside>
@@ -93,12 +93,12 @@
 
 <!-- Settings -->
 <template name="settings">
-    <section id="tldr-settings-container">
-        <ul id="tldr-setting">
-           {{#each settings}}
-            {{> setting}}
-           {{/each}}
-        </ul>
+     <section id="tldr-settings-container">
+        <section id="tldr-settings">
+            {{> delete-button}}
+            {{> user-button}}
+            {{> list-button}}
+        </section>
     </section>
 </template>
 
@@ -365,6 +365,49 @@
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
             <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button-header">openbook</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+
+<!-- List Button -->
+<template name="list-button">
+    <aside class="tldr-button-list tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-panel-button">rows</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- User Button -->
+<template name="user-button">
+    <aside class="tldr-button-user tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-panel-button">user</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Delete Button -->
+<template name="delete-button">
+    <aside class="tldr-button-delete tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-panel-button tldr-button-red">delete</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>

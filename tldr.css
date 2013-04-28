@@ -1404,6 +1404,20 @@ html {
   border-radius: 10px 0 0 10px;
   background: #eeeeee; }
 
+#tldr-settings-container {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #aeaeae;
+  padding: 1px;
+  z-index: 5;
+  margin-right: -4000px;
+  float: right; }
+
+#tldr-settings {
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  background: #eeeeee; }
+
 #tldr-narrative-container {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
@@ -1498,7 +1512,7 @@ html {
   user-select: none; }
 
 .tldr-button {
-  font-size: 32px;
+  font-size: 34px;
   margin-right: 10px;
   color: #ffffff;
   -webkit-text-stroke-width: 1px;
@@ -1510,10 +1524,13 @@ html {
   -ms-user-select: none;
   user-select: none; }
 
+.flex-box-flex-1.ss-icon.tldr-button {
+  padding-top: 10px; }
+
 .tldr-button-footer {
   color: #ffffff;
   font-size: 32px;
-  padding: 0 10px 0 10px;
+  padding: 0 12px 0 10px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -1552,6 +1569,16 @@ html {
   padding: 10px;
   color: #000000; }
 
+.tldr-button-green {
+  color: #006600;
+  -webkit-text-stroke-color: #007700;
+  -webkit-text-stroke-width: 1px; }
+
+.tldr-button-red {
+  color: #990000;
+  -webkit-text-stroke-color: #660000;
+  -webkit-text-stroke-width: 1px; }
+
 #tldr-controls-container {
   margin: 18px 0 16px 16px; }
 
@@ -1588,13 +1615,7 @@ html {
   border-radius: 8px;
   -moz-border-radius: 8px;
   border: 1px solid #555555;
-  background-color: #cdcdcd;
-  background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 200, from(#eeeeee), to(#cdcdcd));
-  background-image: -webkit-radial-gradient(50% 50%, #cdcdcd, #eeeeee);
-  background-image: -moz-radial-gradient(50% 50%, #cdcdcd, #eeeeee);
-  background-image: -o-radial-gradient(50% 50%, #cdcdcd, #eeeeee);
-  background-image: -ms-radial-gradient(50% 50%, #cdcdcd, #eeeeee);
-  background-image: radial-gradient(50% 50%, #cdcdcd, #eeeeee); }
+  background-color: #ffffff; }
 
 #tldr-scrubber-bar-left-loaded {
   height: 6px;
