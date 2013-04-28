@@ -10,6 +10,21 @@ Meteor.startup( () ->
 
     Video = (video) ->
       @video = video
+      @video.addEventListener( 'progress', (e) ->
+        duration = e.srcElement.duration
+        current = e.srcElement.currentTime
+        complete = current/duration
+        total_width = $( "#tldr-scrubber" ).outerWidth()
+        if( false is isNaN complete )
+          width = Math.floor( complete * total_width )
+          $( "#tldr-scrubber-bar-left-loaded" ).css( 'width', Math.floor( width ) + 'px' )
+          try
+            end = video.buffered.end(0)
+            loaded_pixels = end - width
+            $("#tldr-scrubber-bar-right-loaded").width( loaded_pixels + 'px');
+          catch error
+            console.log( 'no buffering avail', error )
+      )
       @
 
     Video::play = () ->
@@ -196,12 +211,33 @@ if Meteor.isClient
       $( '.tldr-button-media-cancel' ).addClass( 'tldr-button-media' ).removeClass( 'tldr-button-media-cancel').text( 'write' )
     )
 
+  # Settings
+
+  showSettings = () ->
+    node = $("#tldr-settings-container")
+    node.show()
+    doAnim( node,
+      'margin-right': '0px'
+    , () ->
+      console.log('nasty')
+      $( '.tldr-button-settings' ).removeClass( 'tldr-button-settings' ).addClass( 'tldr-button-settings-cancel').text( 'checkmark' )
+    )
+
+  hideSettings = () ->
+    node = $("#tldr-settings-container")
+    node.hide()
+    doAnim( node,
+      'margin-right': '-3000px'
+    , () ->
+      $( '.tldr-button-settings-cancel' ).addClass( 'tldr-button-settings' ).removeClass( 'tldr-button-settings-cancel').text( 'settings' )
+    )
   if true is isEditing()
 
     Template.controls.events "click .tldr-button-edit": ( e ) ->
       showPanel()
       hideNarrative()
       hideMedia()
+      hideSettings()
 
     Template.controls.events "click .tldr-button-edit-cancel": ( e ) ->
       hidePanel()
@@ -210,16 +246,29 @@ if Meteor.isClient
       showNarrative()
       hidePanel()
       hideMedia()
+      hideSettings()
 
     Template.controls.events "click .tldr-button-narrative-cancel": ( e ) ->
       hideNarrative()
+
     Template.controls.events "click .tldr-button-media": ( e ) ->
       showMedia()
       hideNarrative()
       hidePanel()
+      hideSettings()
 
     Template.controls.events "click .tldr-button-media-cancel": ( e ) ->
       hideMedia()
+
+
+    Template.controls.events "click .tldr-button-settings": ( e ) ->
+      showSettings()
+      hideNarrative()
+      hideMedia()
+      hidePanel()
+
+    Template.controls.events "click .tldr-button-settings-cancel": ( e ) ->
+      hideSettings()
 
     Template.toolbar.events "keydown .tldr-title": ( e ) ->
       story = Session.get('story')

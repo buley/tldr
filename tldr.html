@@ -21,6 +21,7 @@
 <!-- header -->
 <template name="header">
     <header class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+      {{> logo}}
       {{> toolbar}}
     </header>
 </template>
@@ -32,7 +33,11 @@
         <aside id="tldr-logo-area-above" class="flex-box-flex-0"></aside>
         <aside id="tldr-logo-area" class="flex-box-orient-horizontal flex-box-flex-1">
             <aside id="tldr-logo-area-left" class="flex-box-flex-0"></aside>
-            <nav class="tldr-logo flex-box-flex-1 ss-video"></nav>
+            <nav class="tldr-logo flex-box-flex-1 flex-box flex-box-orient-vertical">
+                <!--<aside id="tldr-logo-area-top" class="flex-box-flex-1 serif-smallcaps">POWERED BY</aside>-->
+                <aside id="tldr-logo-area-middle" class="flex-box-flex-1 serif">LIVE</aside>
+                <aside id="tldr-logo-area-bottom" class="flex-box-flex-1 sans-serif">VIDEO.CO</aside>
+            </nav>
             <aside id="tldr-logo-area-right" class="flex-box-flex-0"></aside>
         </aside>
         <aside id="tldr-logo-area-below" class="flex-box-flex-0"></aside>
@@ -68,6 +73,7 @@
         <section id="tldr-flyouts">
             {{> media}}
             {{> narratives}}
+            {{> settings}}
             {{> panel}}
         </section>
     </section>
@@ -85,6 +91,25 @@
     </section>
 </template>
 
+<!-- Settings -->
+<template name="settings">
+    <section id="tldr-settings-container">
+        <ul id="tldr-setting">
+           {{#each settings}}
+            {{> setting}}
+           {{/each}}
+        </ul>
+    </section>
+</template>
+
+<!-- Setting -->
+<template name="setting">
+    <li class="tldr-setting-container">
+        <ul class="tldr-setting">
+            SETTING
+        </ul>
+    </section>
+</template>
 
 <!-- Narrative -->
 <template name="media">
@@ -117,7 +142,7 @@
 
 <!-- Toolbar -->
 <template name="toolbar">
-    <section id="toolbar" class="flex-box flex-box-orient-horizontal flex-box-flex-1">
+    <section id="tldr-toolbar" class="flex-box flex-box-orient-horizontal flex-box-flex-1">
         <section id="tldr-controls-spacer" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
             <section class="flex-box-flex-0">
                 <div class="tldr-controls-spacer-title-icon ss-link flex-box-flex-0"></div>
@@ -137,6 +162,7 @@
     <nav id="tldr-controls" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
         {{> narrative-button}}
         {{> media-button}}
+        {{> settings-button}}
     </nav>
 </template>
 
@@ -233,6 +259,19 @@
 </template>
 
 
+
+<!-- Settings Button -->
+<template name="settings-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-button-container-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-settings tldr-button-header">settings</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
 
 <!-- Edit Button -->
 <template name="edit-button">
