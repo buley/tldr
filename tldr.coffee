@@ -12,6 +12,7 @@ Meteor.startup( () ->
         console.log('story loaded',story.url)
         Session.setDefault('story', story );
         $( '.tldr-title' ).val( story.url );
+        createGrid( story.url )
       )
       if true is isEditing()
         populateNarrative( id )
@@ -65,6 +66,40 @@ if Meteor.isClient
 
   isEditing = () ->
     'edit' is currentMode()
+
+  createGrid = (url) ->
+
+    hexgrid = new Hexgrid(
+      id: "tldr-canvases"
+      side: 10
+      fill: "transparent"
+      line:
+        width: 1
+        color: 'rgba(0,0,0,.1)'
+      video:
+        src: url
+        x: 0
+        y: 0
+
+      onclick: (obj) ->
+
+      onmouseout: (obj) ->
+
+        api = obj.api
+        hex = obj.data
+
+      onmouseover: (obj) ->
+        console.log "mouseover", obj
+        api = obj.api
+        hex = obj.data
+
+      ondrawn: (obj) ->
+        api = obj.api
+        hex = obj.data
+    )
+
+
+  #
 
   doAnim = (node, prop, fn) ->
       $( node ).animate prop,

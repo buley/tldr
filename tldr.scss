@@ -1440,12 +1440,29 @@ html {
 
 }
 
-#tldr-canvas {
+#tldr-canvases {
   height: 100%;
   width: 100%;
   position: absolute;
   z-index: 1;
   background: #000000;
+}
+
+
+#tldr-canvas {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  background: transparent;
+}
+
+#tldr-interactive {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  background: transparent;
 }
 
 #tldr-flyouts {
