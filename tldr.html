@@ -152,6 +152,8 @@
     <section id="tldr-scrubber-container" class="flex-box flex-box-orient-horizontal">
         <aside id="tldr-scrubber-controls-left" class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
             {{> play-button}}
+            {{> pause-button}}
+            {{> stop-button}}
         </aside>
         <nav id="tldr-scrubber" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
             <section id="tldr-scrubber-bar-left-container" class="flex-box-flex-0 flex-box flex-box-orient-vertical">
@@ -192,11 +194,11 @@
 
 <!-- Play Button -->
 <template name="play-button">
-    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+    <aside class="tldr-button-play tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-play tldr-button">play</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button">play</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -206,11 +208,11 @@
 
 <!-- Stop Button -->
 <template name="stop-button">
-    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+    <aside class="tldr-button-stop tldr-button-container flex-box-flex-0 flex-box-orient-vertical" style="display:none;">
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-stop tldr-button">stop</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button">stop</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
@@ -219,11 +221,11 @@
 
 <!-- Pause Button -->
 <template name="pause-button">
-    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+    <aside class="tldr-button-pause tldr-button-container flex-box-flex-0 flex-box-orient-vertical" style="display:none">
         <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
         <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
             <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
-            <nav class="flex-box-flex-1 ss-icon tldr-button-pause tldr-button">pause</nav>
+            <nav class="flex-box-flex-1 ss-icon tldr-button">pause</nav>
             <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
         </aside>
         <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>

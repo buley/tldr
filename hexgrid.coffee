@@ -702,9 +702,6 @@ if Meteor.isClient then window.Hexgrid = (->
           type = "video/mp4"
         else type = "video/webm"  if source.toLowerCase().match(/\.webm$/) and "maybe" is video.canPlayType("video/webm")
         source.type = type
-        video.addEventListener "canplay", ->
-          video.play()
-
         video.appendChild source_el
         x += 1
       videos[src] = video

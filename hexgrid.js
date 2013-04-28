@@ -729,9 +729,6 @@
               }
             }
             source.type = type;
-            video.addEventListener("canplay", function() {
-              return video.play();
-            });
             video.appendChild(source_el);
             x += 1;
           }

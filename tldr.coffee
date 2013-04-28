@@ -1,24 +1,44 @@
 # Stories
 Stories = new Meteor.Collection("stories");
 Users = new Meteor.Collection("users");
+that = @
+that.video = null
+
 
 Meteor.startup( () ->
   if Meteor.isClient
+
+    Video = (video) ->
+      @video = video
+      @
+
+    Video::play = () ->
+      @video.play()
+      $('.tldr-button-play').hide()
+      $('.tldr-button-pause').show()
+    Video::pause = () ->
+      $('.tldr-button-play').show()
+      $('.tldr-button-pause').hide()
+      @video.pause()
+    Video::stop = () ->
+      $('.tldr-button-play').show()
+      $('.tldr-button-pause').hide()
+      @video.stop()
+
+
     id = currentId()
     Session.setDefault('token', id );
 
     Meteor.subscribe( 'stories', () ->
       loadStory( id, (story) ->
-        console.log('story loaded',story.url)
+
         Session.setDefault('story', story );
         $( '.tldr-title' ).val( story.url );
         grid = createGrid( story.url )
         media = grid.sources()
         videos = media.videos
-        console.log('media',media)
-        video = videos[ story.url ]
+        that.video = new Video( videos[ story.url ] )
         console.log('video',video)
-
       )
       if true is isEditing()
         populateNarrative( id )
@@ -208,7 +228,6 @@ if Meteor.isClient
       Stories.update( { _id: Session.get( 'story' )[ '_id' ] }, story )
       Session.set('story',story)
       regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
-      console.log('keydown: ' + url,url.match(regex))
 
       if null is url.match( regex )
         $( '.tldr-controls-spacer-title-icon').css('color', '#660000' )
@@ -229,3 +248,12 @@ if Meteor.isClient
 
     Template.narratives.narratives = () ->
       if ( 'undefined' isnt typeof Session.get('story') ) then Session.get('story')[ 'narratives' ] else []
+
+    Template.scrubber.events "click .tldr-button-play": (e) ->
+      that.video.play()
+
+    Template.scrubber.events "click .tldr-button-pause": (e) ->
+      that.video.pause()
+
+    Template.scrubber.events "click .tldr-button-stop": (e) ->
+      that.video.stop()
