@@ -1446,6 +1446,7 @@ html {
   position: absolute;
   z-index: 1;
   background: #000000;
+  overflow-x: hidden;
 }
 
 
@@ -1509,7 +1510,6 @@ html {
   padding: 1px;
   margin-right: -1000px;
   z-index: 3;
-  float: right;
 }
 
 #tldr-panel {
@@ -1527,7 +1527,6 @@ html {
   box-sizing:border-box;
   z-index: 5;
   margin-right: -4000px;
-  float: right;
 }
 
 #tldr-settings {
@@ -1571,7 +1570,6 @@ html {
   padding: 1px;
   margin-right: -2000px;
   z-index: 4;
-  float: left;
 }
 
 #tldr-media {
@@ -1579,8 +1577,10 @@ html {
   border-radius: 10px 0 0 10px;
   background: #eeeeee;
 }
+
 #tldr-application {
   height: 100%;
+  overflow-x: hidden;
   width: 100%;
   position: absolute;
   z-index: 2;
@@ -1646,7 +1646,7 @@ html {
 .tldr-button {
   font-size: 34px;
   margin-right: 10px;
-  color: #ffffff;
+  color: #990000;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #555555;
   -webkit-touch-callout: none;
@@ -1663,7 +1663,7 @@ padding-top:10px;
 }
 
 .tldr-button-footer {
-  color: #ffffff;
+  color: #990000;
   font-size: 32px;
   padding: 0 12px 0 10px;
   -webkit-touch-callout: none;
@@ -1726,6 +1726,12 @@ padding-top:10px;
   font-size: 32px;
   padding: 16px;
   color: #000000;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 

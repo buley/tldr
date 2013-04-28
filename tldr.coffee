@@ -39,6 +39,9 @@ Meteor.startup( () ->
       $('.tldr-button-play').show()
       $('.tldr-button-pause').hide()
       @video.stop()
+    Video::skip = (percentage) ->
+      console.log('skip',percentage)
+      @video.currentTime = @video.duration * percentage
 
 
     id = currentId()
@@ -296,6 +299,15 @@ if Meteor.isClient
       if ( 'rgb(255, 255, 255)' is $( '.tldr-controls-spacer-title-icon').css('color' ) )
         $( '.tldr-controls-spacer-title-icon').css('color', 'rgb(204, 204, 204)' )
         $( '#tldr-controls-spacer-title').css('color', 'rgb(204, 204, 204)' )
+
+    Template.footer.events "click #tldr-scrubber": ( e ) ->
+      offset = $( "#tldr-scrubber" ).offset()
+      width = $( "#tldr-scrubber" ).outerWidth()
+      pixels = e.clientX - offset.left
+      percentage = pixels / width
+      $( "#tldr-scrubber-bar-left" ).width( ( percentage * width ) - ( .5 * ( $( "#tldr-scrubber-knob-container" ).outerWidth() ) ) )
+      that.video.skip(percentage)
+
 
     Template.narratives.narratives = () ->
       if ( 'undefined' isnt typeof Session.get('story') ) then Session.get('story')[ 'narratives' ] else []

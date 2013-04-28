@@ -50,6 +50,10 @@
         $('.tldr-button-pause').hide();
         return this.video.stop();
       };
+      Video.prototype.skip = function(percentage) {
+        console.log('skip', percentage);
+        return this.video.currentTime = this.video.duration * percentage;
+      };
       id = currentId();
       Session.setDefault('token', id);
       return Meteor.subscribe('stories', function() {
@@ -370,6 +374,17 @@
             $('.tldr-controls-spacer-title-icon').css('color', 'rgb(204, 204, 204)');
             return $('#tldr-controls-spacer-title').css('color', 'rgb(204, 204, 204)');
           }
+        }
+      });
+      Template.footer.events({
+        "click #tldr-scrubber": function(e) {
+          var offset, percentage, pixels, width;
+          offset = $("#tldr-scrubber").offset();
+          width = $("#tldr-scrubber").outerWidth();
+          pixels = e.clientX - offset.left;
+          percentage = pixels / width;
+          $("#tldr-scrubber-bar-left").width((percentage * width) - (.5 * ($("#tldr-scrubber-knob-container").outerWidth())));
+          return that.video.skip(percentage);
         }
       });
       Template.narratives.narratives = function() {
