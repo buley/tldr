@@ -1,0 +1,246 @@
+<head>
+  <title>tldr.info - a storytelling layer for web video</title>
+</head>
+
+<body>
+{{> container}}
+</body>
+
+<!-- Container -->
+<template name="container">
+  <section id="tldr" class="flex-box flex-box-orient-vertical">
+      <section id="tldr-application" class="flex-box flex-box-orient-vertical">
+          {{> header}}
+          {{> content}}
+          {{> footer}}
+      </section>
+      <section id="tldr-canvas"></section>
+  </section>
+</template>
+
+<!-- header -->
+<template name="header">
+    <header class="flex-box-flex-0 flex-box flex-box-orient-horizontal">
+      {{> logo}}
+      {{> toolbar}}
+    </header>
+</template>
+
+
+<!-- Logo -->
+<template name="logo">
+    <aside id="tldr-logo" class="flex-box-flex-0 flex-box-orient-vertical">
+        <aside id="tldr-logo-area-above" class="flex-box-flex-0"></aside>
+        <aside id="tldr-logo-area" class="flex-box-orient-horizontal flex-box-flex-1">
+            <aside id="tldr-logo-area-left" class="flex-box-flex-0"></aside>
+            <nav class="tldr-logo flex-box-flex-1 ss-video"></nav>
+            <aside id="tldr-logo-area-right" class="flex-box-flex-0"></aside>
+        </aside>
+        <aside id="tldr-logo-area-below" class="flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+<!-- Content -->
+<template name="content">
+    <section id="tldr-content" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
+        {{> left}}
+        {{> middle}}
+        {{> right}}
+    </section>
+</template>
+
+
+<!-- Left -->
+<template name="left">
+    <section id="tldr-left" class="flex-box-flex-0">
+        Left
+    </section>
+</template>
+
+
+<!-- Middle -->
+<template name="middle">
+    <section id="tldr-middle" class="flex-box-flex-1">
+        Middle
+    </section>
+</template>
+
+<!-- Right -->
+<template name="right">
+    <section id="tldr-right" class="flex-box-flex-0">
+        {{> panel}}
+        {{> narrative}}
+    </section>
+</template>
+
+
+<!-- Panel -->
+<template name="panel">
+    <section id="tldr-panel-container" class="">
+        <section id="tldr-panel" class="">
+            {{> play-button}}
+            {{> pause-button}}
+            {{> stop-button}}
+        </section>
+    </section>
+</template>
+
+
+<!-- Narrative -->
+<template name="narrative">
+    <section id="tldr-narrative-container" class="">
+        <section id="tldr-narrative class=">
+            {{> image-button}}
+            {{> video-button}}
+            {{> text-button}}
+        </section>
+    </section>
+</template>
+
+<!-- Toolbar -->
+<template name="toolbar">
+    <section id="toolbar" class="flex-box flex-box-orient-horizontal flex-box-flex-1">
+        <aside id="tldr-controls-spacer" class="flex-box-flex-1"></aside>
+        <nav id="tldr-controls-container" class="flex-box-flex-0">
+           {{> controls}}
+        </nav>
+    </section>
+</template>
+
+<!-- Controls -->
+<template name="controls">
+    <nav id="tldr-controls" class="flex-box-flex-1 flex-box flex-box-orient-horizontal">
+        {{> edit-button}}
+        {{> narrative-button}}
+    </nav>
+</template>
+
+<!-- Footer -->
+<template name="footer">
+    <footer id="tldr-footer" class="flex-box-flex-0">
+      {{> copyright}}
+    </footer>
+</template>
+
+
+<!-- Copyright -->
+<template name="copyright">
+    <aside id="tldr-legal">
+        <small>Copyright (c) 2013 BULEY LLC</small>
+    </aside>
+</template>
+
+
+<!-- Play Button -->
+<template name="play-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-play tldr-panel-button">play</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Stop Button -->
+<template name="stop-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-stop tldr-panel-button">stop</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+<!-- Pause Button -->
+<template name="pause-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-pause tldr-panel-button">pause</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Edit Button -->
+<template name="edit-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-write tldr-button-edit tldr-button"></nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Narrative Button -->
+<template name="narrative-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-narrative tldr-button">rows</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+
+
+
+
+<!-- Image Button -->
+<template name="image-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-image tldr-panel-button">image</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Video Button -->
+<template name="video-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-video tldr-panel-button">video</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
+
+
+<!-- Text Button -->
+<template name="text-button">
+    <aside class="tldr-button-container flex-box-flex-0 flex-box-orient-vertical">
+        <aside class="tldr-button-container-area-above flex-box-flex-0"></aside>
+        <aside class="tldr-button-container-area flex-box-orient-horizontal flex-box-flex-1">
+            <aside class="tldr-logo-area-left flex-box-flex-0"></aside>
+            <nav class="flex-box-flex-1 ss-icon tldr-button-text tldr-panel-button">text</nav>
+            <aside class="tldr-button-container-area-right flex-box-flex-0"></aside>
+        </aside>
+        <aside class="tldr-button-container-area-below flex-box-flex-0"></aside>
+    </aside>
+</template>
