@@ -60,10 +60,19 @@
     </section>
 </template>
 
+<!-- Content -->
+<template name="middle-content">
+    <section id="tldr-middle-content-container" class="flex-box-flex-1 flex-box flex-box-orient-vertical">
+        <section id="tldr-middle-content" class="flex-box-flex-1">
+            CONTENT
+        </section>
+    </section>
+</template>
 
 <!-- Middle -->
 <template name="middle">
-    <section id="tldr-middle" class="flex-box-flex-1">
+    <section id="tldr-middle" class="flex-box-flex-1 flex-box flex-box-orient-vertical">
+        {{> middle-content}}
     </section>
 </template>
 
