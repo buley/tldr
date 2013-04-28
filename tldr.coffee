@@ -1,5 +1,65 @@
+# Stories
+Narratives = new Meteor.Collection("narratives");
+Stories = new Meteor.Collection("stories");
+Users = new Meteor.Collection("users");
+
+Meteor.startup( () ->
+  if Meteor.isClient
+    id = currentId()
+    Session.setDefault('token', id );
+    Meteor.subscribe( 'stories', () ->
+      loadStory( id, (story) ->
+        console.log('story loaded',story)
+      )
+      if true is isEditing()
+        populateNarrative( id )
+    )
+  else if Meteor.isServer
+    Meteor.publish( "stories", () ->
+      Stories.find({}, {fields: {token: 1, modified: 1}} )
+    )
+)
+
+currentId = () ->
+  document.location.pathname.replace(/^\//,'')
+
+currentMode = () ->
+  document.location.hash.replace(/^#/,'')
+
+getStories = () ->
+  Stories.find().fetch()
+
+countStories = () ->
+  Stories.find().fetch().length
+
+loadStory = (id, fn) ->
+  story = getStory(id)
+  if null is story
+    story = createStory(id)
+  if 'function' is typeof fn then fn(story)
+  story
+
+getStory = (id) ->
+  story = Stories.find( { token: id }).fetch()
+  if 'undefined' is typeof story then story = null
+  else if null isnt story then story = story[ 0 ] || null
+  story
+
+createStory = (id) ->
+  story = Stories.insert(
+    token: id
+  )
+  if 'undefined' is typeof story then story = null
+  else story = Stories.find( { token: id }).fetch()[ 0 ]
+  story
+
+populateNarrative = (id) ->
+  console.log('get narrative', id)
 
 if Meteor.isClient
+
+  isEditing = () ->
+    'edit' is currentMode()
 
   doAnim = (node, prop, fn) ->
       $( node ).animate prop,
@@ -72,30 +132,27 @@ if Meteor.isClient
       $( '.tldr-button-media-cancel' ).addClass( 'tldr-button-media' ).removeClass( 'tldr-button-media-cancel').text( 'images' )
     )
 
-  Template.controls.events "click .tldr-button-edit": ( e ) ->
-    showPanel()
-    hideNarrative()
-    hideMedia()
+  if true is isEditing()
 
-  Template.controls.events "click .tldr-button-edit-cancel": ( e ) ->
-    hidePanel()
+    Template.controls.events "click .tldr-button-edit": ( e ) ->
+      showPanel()
+      hideNarrative()
+      hideMedia()
 
-  Template.controls.events "click .tldr-button-narrative": ( e ) ->
-    showNarrative()
-    hidePanel()
-    hideMedia()
+    Template.controls.events "click .tldr-button-edit-cancel": ( e ) ->
+      hidePanel()
 
-  Template.controls.events "click .tldr-button-narrative-cancel": ( e ) ->
-    hideNarrative()
+    Template.controls.events "click .tldr-button-narrative": ( e ) ->
+      showNarrative()
+      hidePanel()
+      hideMedia()
 
-  Template.controls.events "click .tldr-button-media": ( e ) ->
-    showMedia()
-    hideNarrative()
-    hidePanel()
+    Template.controls.events "click .tldr-button-narrative-cancel": ( e ) ->
+      hideNarrative()
+    Template.controls.events "click .tldr-button-media": ( e ) ->
+      showMedia()
+      hideNarrative()
+      hidePanel()
 
-  Template.controls.events "click .tldr-button-media-cancel": ( e ) ->
-    hideMedia()
-
-if Meteor.isServer
-  Meteor.startup ->
-    console.log("Restart > " + new Date().getTime() )
+    Template.controls.events "click .tldr-button-media-cancel": ( e ) ->
+      hideMedia()

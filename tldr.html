@@ -69,10 +69,10 @@
 <template name="right">
     <section id="tldr-right" class="flex-box-flex-0">
         <section id="tldr-flyouts">
-            {{> panel}}
-            {{> narrative}}
             {{> media}}
-        <section>
+            {{> narrative}}
+            {{> panel}}
+        </section>
     </section>
 </template>
 
@@ -103,8 +103,24 @@
 <!-- Narrative -->
 <template name="narrative">
     <section id="tldr-narrative-container">
-        <section id="tldr-narrative">
-        </section>
+        <ul id="tldr-narrative">
+           <li>
+               <span class='tldr-narrative-icon ss-star'></span>
+               <span class='tldr-narrative-text'>Item 1</span>
+           </li>
+           <li>
+               <span class='tldr-narrative-icon ss-star'></span>
+               <span class='tldr-narrative-text'>Item 2</span>
+           </li>
+           <li>
+               <span class='tldr-narrative-icon ss-star'></span>
+               <span class='tldr-narrative-text'>Item 3</span>
+           </li>
+           <li>
+               <span class='tldr-narrative-icon ss-star'></span>
+               <span class='tldr-narrative-text'>Item 4</span>
+           </li>
+        </ul>
     </section>
 </template>
 

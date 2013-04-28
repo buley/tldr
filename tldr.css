@@ -1398,7 +1398,16 @@ html {
 #tldr-narrative {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
-  background: #eeeeee; }
+  background: #fff;
+  padding: 0 10px 0 10px;
+  margin: 0;
+  list-style-type: none; }
+
+#tldr-narrative > li {
+  padding: 5px 0 10px 0; }
+
+#tldr-narrative > li:nth-child(1) {
+  padding: 10px 0 10px 0; }
 
 #tldr-media-container {
   -moz-border-radius: 10px 0 0 10px;
