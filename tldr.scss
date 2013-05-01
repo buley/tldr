@@ -1,5 +1,6 @@
-@import url( 'http://fast.fonts.com/cssapi/e7991c0b-91de-48a5-a807-5c343443b604.css' );
+@import url( 'http://fast.fonts.com/cssapi/0474598b-24e6-4438-b6c8-f712a53a210a.css' );
 @import url( '/fonts/ss-standard/webfonts/ss-standard.css' );
+
 
 /* colors */
 
@@ -1515,7 +1516,9 @@ html {
 #tldr-panel {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
+  padding: 0 20px 0 10px;
   background: #eeeeee;
+  overflow: scroll;
 }
 
 #tldr-settings-container {
@@ -1532,8 +1535,10 @@ html {
 #tldr-settings {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
+  padding: 10px 10px 0 10px;
   background: #eeeeee;
-  height: 100%;
+  overflow: scroll;
+  box-sizing: border-box;
 }
 
 #tldr-narrative-container {
@@ -1550,8 +1555,10 @@ html {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
   background: #fff;
-  padding: 0 10px 0 10px;
+  padding: 10px 20px 0 10px;
   margin: 0;
+  box-sizing: border-box;
+  overflow: scroll;
   list-style-type: none;
 }
 
@@ -1575,7 +1582,10 @@ html {
 #tldr-media {
   -moz-border-radius: 10px 0 0 10px;
   border-radius: 10px 0 0 10px;
+  padding: 10px 10px 0 10px;
+  box-sizing: border-box;
   background: #eeeeee;
+  overflow: scroll;
 }
 
 #tldr-application {
@@ -1804,3 +1814,17 @@ padding-top:10px;
   background-color: #aaaaaa;
 }
 
+.tldr-narrative-icon {
+  float: left;
+  clear: left;
+  padding: 0 5px 0 0;
+  margin: 0 0 5px 0;
+  color: #555555;
+  font-size: 20px;
+}
+
+.tldr-narrative-text {
+  float: left;
+  clear: right;
+  color: #aaaaaa;
+}

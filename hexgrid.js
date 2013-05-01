@@ -311,6 +311,7 @@
         api = this;
         if ("undefined" === typeof videos[src]) {
           video = document.createElement("video");
+          video.crossOrigin = "anonymous";
           section.appendChild(video);
           sources = [src];
           sourcelen = sources.length;

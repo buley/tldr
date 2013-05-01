@@ -340,6 +340,7 @@ if Meteor.isClient then window.Hexgrid = (->
     api = this
     if "undefined" is typeof videos[src]
       video = document.createElement("video")
+      video.crossOrigin = "anonymous"
       section.appendChild video
       sources = [src]
       sourcelen = sources.length

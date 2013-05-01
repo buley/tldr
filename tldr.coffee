@@ -4,9 +4,45 @@ Users = new Meteor.Collection("users");
 that = @
 that.video = null
 
+timestampToPrettyDate = (t) ->
+  running = Math.round(t)
+  remainder = running % 3600
+  running = ( running - ( running % 3600 ) )
+  hours = ( running / 3600 ).toString()
+  hours = if ( hours.toString().length < 2 ) then "0" + hours else hours.toString()
+  running = remainder
+  remainder = running % 60
+  running = ( running - ( running % 60 ) )
+  minutes = ( running / 60 ).toString()
+  minutes = if ( minutes.length < 2 ) then "0" + minutes else minutes
+  seconds = remainder.toString()
+  seconds = if ( seconds.length < 2 ) then "0" + seconds else seconds
+  [ hours, minutes, seconds ].join( ":" )
+
 
 Meteor.startup( () ->
   if Meteor.isClient
+    flyouts$ = $("#tldr-flyouts")
+    right$ = $("#tldr-right")
+    narrative_container$ = $("#tldr-narrative-container")
+    narrative$ = $("#tldr-narrative")
+    media$ = $("#tldr-media")
+    media_container$ = $("#tldr-media-container")
+    settings$ = $("#tldr-settings")
+    settings_container$ = $("#tldr-settings-container")
+    tightenUI = () ->
+      max = right$.outerHeight() + "px"
+      flyouts$.css( 'max-height',max )
+      narrative_container$.css('max-height', max)
+      narrative$.css( 'max-height', max)
+      console.log('xxx')
+      media$.css( 'max-height', max)
+      media_container$.css('max-height', max)
+      settings$.css( 'max-height', max)
+      settings_container$.css('max-height', max)
+
+    tightenUI()
+    window.addEventListener 'resize', (e) -> tightenUI()
 
     Video = (video) ->
       @video = video
@@ -42,7 +78,7 @@ Meteor.startup( () ->
     Video::skip = (percentage) ->
       console.log('skip',percentage)
       @video.currentTime = @video.duration * percentage
-
+    Video::media = () -> @video
 
     id = currentId()
     Session.setDefault('token', id );
@@ -300,6 +336,20 @@ if Meteor.isClient
         $( '.tldr-controls-spacer-title-icon').css('color', 'rgb(204, 204, 204)' )
         $( '#tldr-controls-spacer-title').css('color', 'rgb(204, 204, 204)' )
 
+    Template.footer.events "click .tldr-button-bookmark": ( e ) ->
+      video = that.video.media()
+      bookmark =
+        total: video.duration
+        location: video.currentTime
+        created: new Date().getTime()
+        #data: document.getElementById( 'hexgrid-media' ).toDataURL('image/png')
+      story = Session.get('story')
+      story.narratives = story.narratives || []
+      story.narratives.push( bookmark )
+      Stories.update( { _id: story[ '_id' ] }, story )
+      Session.set( 'story', story )
+      console.log("BOOKMARK", story.narratives )
+
     Template.footer.events "click #tldr-scrubber": ( e ) ->
       offset = $( "#tldr-scrubber" ).offset()
       width = $( "#tldr-scrubber" ).outerWidth()
@@ -308,6 +358,7 @@ if Meteor.isClient
       $( "#tldr-scrubber-bar-left" ).width( ( percentage * width ) - ( .5 * ( $( "#tldr-scrubber-knob-container" ).outerWidth() ) ) )
       that.video.skip(percentage)
 
+    Template.narrative.pretty_timestamp = () -> timestampToPrettyDate( @location )
 
     Template.narratives.narratives = () ->
       if ( 'undefined' isnt typeof Session.get('story') ) then Session.get('story')[ 'narratives' ] else []
