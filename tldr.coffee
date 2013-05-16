@@ -35,7 +35,6 @@ Meteor.startup( () ->
       flyouts$.css( 'max-height',max )
       narrative_container$.css('max-height', max)
       narrative$.css( 'max-height', max)
-      console.log('xxx')
       media$.css( 'max-height', max)
       media_container$.css('max-height', max)
       settings$.css( 'max-height', max)
@@ -44,40 +43,75 @@ Meteor.startup( () ->
     tightenUI()
     window.addEventListener 'resize', (e) -> tightenUI()
 
-    Video = (video) ->
+    Video = (obj) ->
+      video = obj.video
+      muted = obj.muted
+      rate = obj.rate
+      @onprogress = []
+      @onplay = []
+      @onpause = []
+      @onstop = []
+      if 'function' is typeof obj.progress then @onprogress.push obj.progress
+      if 'function' is typeof obj.stop then @onstop.push obj.stop
+      if 'function' is typeof obj.pause then @onpause.push obj.pause
+      if 'function' is typeof obj.play then @onplay.push obj.play
+      progress = obj.progress
+      instance = @
       @video = video
+      @video.defaultMuted = !!muted | false;
+      @video.defaultPlaybackRate = if !!rate then rate else 1
+      #posterframe
+      #autoplay
       @video.addEventListener( 'progress', (e) ->
-        duration = e.srcElement.duration
-        current = e.srcElement.currentTime
-        complete = current/duration
-        total_width = $( "#tldr-scrubber" ).outerWidth()
-        if( false is isNaN complete )
-          width = Math.floor( complete * total_width )
-          $( "#tldr-scrubber-bar-left-loaded" ).css( 'width', Math.floor( width ) + 'px' )
-          try
-            end = video.buffered.end(0)
-            loaded_pixels = end - width
-            $("#tldr-scrubber-bar-right-loaded").width( loaded_pixels + 'px');
-          catch error
-            console.log( 'no buffering avail', error )
+        el = e.srcElement
+        duration = el.duration
+        location = el.currentTime
+        buffered = instance.buffered()
+        seekable = instance.seekable()
+        instance._callback( instance.onprogress, [
+          duration: duration
+          location: location
+          timeline: instance._timeline( location, duration, buffered, seekable )
+          buffered: buffered
+          seekable: seekable
+        ] )
       )
       @
 
-    Video::play = () ->
-      @video.play()
-      $('.tldr-button-play').hide()
-      $('.tldr-button-pause').show()
-    Video::pause = () ->
-      $('.tldr-button-play').show()
-      $('.tldr-button-pause').hide()
-      @video.pause()
-    Video::stop = () ->
-      $('.tldr-button-play').show()
-      $('.tldr-button-pause').hide()
-      @video.stop()
-    Video::skip = (percentage) ->
-      console.log('skip',percentage)
-      @video.currentTime = @video.duration * percentage
+    Video::play = () -> @video.play() && @_callback( @onplay )
+    Video::pause = () -> @video.pause() && @_callback( @onpause )
+    Video::stop = () -> @video.stop() && @_callback( @onstop )
+    Video::skip = (percentage) -> @video.currentTime = @video.duration * percentage
+    Video::faster = () -> ++@video.playbackRate
+    Video::slower = () -> --@video.playbackRate
+    Video::rate = (r) -> @video.playbackRate = r
+    Video::mute = () -> @video.mute = true
+    Video::unmute = () -> @video.mute = false
+    Video::buffered = () ->
+      @_iterateTimeRanges( @video.buffered )
+    Video::seekable = () ->
+      @_iterateTimeRanges( @video.seekable )
+    Video::played = () ->
+      @_iterateTimeRanges( @video.played )
+    Video::_timeline = (location, duration, buffered, seekable) ->
+      timeline = []
+      last = null
+      for i, range in buffered
+        begin = range[ 0 ]
+        end = range[ 1 ]
+        if null isnt last then timeline.push [ begin - ( begin - last ), begin ]
+        else
+          timeline.push( range )
+          last = end
+        timeline
+    Video::_callback = (stack, args) ->
+      for fn in stack
+        if 'function' is typeof fn then fn.apply(@,args)
+
+    Video::_iterateTimeRanges = (obj) ->
+      collection = []
+      collection.push [ obj.start( i ), obj.end( i ) ] for _b, i in obj
+      collection
     Video::media = () -> @video
 
     id = currentId()
@@ -91,8 +125,34 @@ Meteor.startup( () ->
         grid = createGrid( story.url )
         media = grid.sources()
         videos = media.videos
-        that.video = new Video( videos[ story.url ] )
-        console.log('video',video)
+        that.video = new Video( {
+          video: videos[ story.url ]
+          play: () ->
+            $('.tldr-button-play').hide()
+            $('.tldr-button-pause').show()
+          pause: () ->
+            $('.tldr-button-play').hide()
+            $('.tldr-button-pause').show()
+          stop: () ->
+            $('.tldr-button-play').show()
+            $('.tldr-button-pause').hide()
+          progress: (state) ->
+              complete = state.location / state.duration
+              console.log('progress',state,complete)
+              ###
+              total_width = $( "#tldr-scrubber" ).outerWidth()
+              if false is isNaN complete
+                width = Math.floor( complete * total_width )
+                $( "#tldr-scrubber-bar-left-loaded" ).css( 'width', Math.floor( width ) + 'px' )
+                try
+                  end = video.buffered.end(0)
+                  loaded_pixels = end - width
+                  $("#tldr-scrubber-bar-right-loaded").width( loaded_pixels + 'px');
+                catch error
+                  #TODO: do something
+                  #console.log( 'no buffering avail', error )
+              ###
+        } )
       )
       if true is isEditing()
         populateNarrative( id )
@@ -140,7 +200,7 @@ createStory = (id) ->
   story
 
 populateNarrative = (id) ->
-  console.log('get narrative', id)
+  #console.log('get narrative', id)
 
 if Meteor.isClient
 
@@ -169,7 +229,6 @@ if Meteor.isClient
         hex = obj.data
 
       onmouseover: (obj) ->
-        console.log "mouseover", obj
         api = obj.api
         hex = obj.data
 
@@ -237,7 +296,6 @@ if Meteor.isClient
     doAnim( node,
       'margin-right': '0px'
     , () ->
-      console.log('nasty')
       $( '.tldr-button-media' ).removeClass( 'tldr-button-media' ).addClass( 'tldr-button-media-cancel').text( 'writingdisabled' )
     )
 
@@ -258,7 +316,6 @@ if Meteor.isClient
     doAnim( node,
       'margin-right': '0px'
     , () ->
-      console.log('nasty')
       $( '.tldr-button-settings' ).removeClass( 'tldr-button-settings' ).addClass( 'tldr-button-settings-cancel').text( 'checkmark' ).addClass( 'tldr-button-green')
       $("#tldr-middle-content-panel").fadeIn()
     )
@@ -348,7 +405,15 @@ if Meteor.isClient
       story.narratives.push( bookmark )
       Stories.update( { _id: story[ '_id' ] }, story )
       Session.set( 'story', story )
-      console.log("BOOKMARK", story.narratives )
+
+    Template.narrative.events "click .tldr-narrative-item": ( e ) ->
+      el$ = $(e.target)
+      if el$.hasClass 'tldr-narrative-text' or el$.hasClass 'tldr-narrative-icon'
+        el$ = el$.parent()
+      percentage = el$.data('percentage')
+      that.video.skip(percentage, () ->
+        console.log('skip complete', percentage)
+      )
 
     Template.footer.events "click #tldr-scrubber": ( e ) ->
       offset = $( "#tldr-scrubber" ).offset()
@@ -359,6 +424,8 @@ if Meteor.isClient
       that.video.skip(percentage)
 
     Template.narrative.pretty_timestamp = () -> timestampToPrettyDate( @location )
+
+    Template.narrative.percentage = () -> @location/@total
 
     Template.narratives.narratives = () ->
       if ( 'undefined' isnt typeof Session.get('story') ) then Session.get('story')[ 'narratives' ] else []

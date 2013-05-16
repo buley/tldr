@@ -44,7 +44,6 @@
         flyouts$.css('max-height', max);
         narrative_container$.css('max-height', max);
         narrative$.css('max-height', max);
-        console.log('xxx');
         media$.css('max-height', max);
         media_container$.css('max-height', max);
         settings$.css('max-height', max);
@@ -54,46 +53,127 @@
       window.addEventListener('resize', function(e) {
         return tightenUI();
       });
-      Video = function(video) {
+      Video = function(obj) {
+        var instance, muted, progress, rate, video;
+        video = obj.video;
+        muted = obj.muted;
+        rate = obj.rate;
+        this.onprogress = [];
+        this.onplay = [];
+        this.onpause = [];
+        this.onstop = [];
+        if ('function' === typeof obj.progress) {
+          this.onprogress.push(obj.progress);
+        }
+        if ('function' === typeof obj.stop) {
+          this.onstop.push(obj.stop);
+        }
+        if ('function' === typeof obj.pause) {
+          this.onpause.push(obj.pause);
+        }
+        if ('function' === typeof obj.play) {
+          this.onplay.push(obj.play);
+        }
+        progress = obj.progress;
+        instance = this;
         this.video = video;
+        this.video.defaultMuted = !!muted | false;
+        this.video.defaultPlaybackRate = !!rate ? rate : 1;
         this.video.addEventListener('progress', function(e) {
-          var complete, current, duration, end, loaded_pixels, total_width, width;
-          duration = e.srcElement.duration;
-          current = e.srcElement.currentTime;
-          complete = current / duration;
-          total_width = $("#tldr-scrubber").outerWidth();
-          if (false === isNaN(complete)) {
-            width = Math.floor(complete * total_width);
-            $("#tldr-scrubber-bar-left-loaded").css('width', Math.floor(width) + 'px');
-            try {
-              end = video.buffered.end(0);
-              loaded_pixels = end - width;
-              return $("#tldr-scrubber-bar-right-loaded").width(loaded_pixels + 'px');
-            } catch (error) {
-              return console.log('no buffering avail', error);
+          var buffered, duration, el, location, seekable;
+          el = e.srcElement;
+          duration = el.duration;
+          location = el.currentTime;
+          buffered = instance.buffered();
+          seekable = instance.seekable();
+          return instance._callback(instance.onprogress, [
+            {
+              duration: duration,
+              location: location,
+              timeline: instance._timeline(location, duration, buffered, seekable),
+              buffered: buffered,
+              seekable: seekable
             }
-          }
+          ]);
         });
         return this;
       };
       Video.prototype.play = function() {
-        this.video.play();
-        $('.tldr-button-play').hide();
-        return $('.tldr-button-pause').show();
+        return this.video.play() && this._callback(this.onplay);
       };
       Video.prototype.pause = function() {
-        $('.tldr-button-play').show();
-        $('.tldr-button-pause').hide();
-        return this.video.pause();
+        return this.video.pause() && this._callback(this.onpause);
       };
       Video.prototype.stop = function() {
-        $('.tldr-button-play').show();
-        $('.tldr-button-pause').hide();
-        return this.video.stop();
+        return this.video.stop() && this._callback(this.onstop);
       };
       Video.prototype.skip = function(percentage) {
-        console.log('skip', percentage);
         return this.video.currentTime = this.video.duration * percentage;
+      };
+      Video.prototype.faster = function() {
+        return ++this.video.playbackRate;
+      };
+      Video.prototype.slower = function() {
+        return --this.video.playbackRate;
+      };
+      Video.prototype.rate = function(r) {
+        return this.video.playbackRate = r;
+      };
+      Video.prototype.mute = function() {
+        return this.video.mute = true;
+      };
+      Video.prototype.unmute = function() {
+        return this.video.mute = false;
+      };
+      Video.prototype.buffered = function() {
+        return this._iterateTimeRanges(this.video.buffered);
+      };
+      Video.prototype.seekable = function() {
+        return this._iterateTimeRanges(this.video.seekable);
+      };
+      Video.prototype.played = function() {
+        return this._iterateTimeRanges(this.video.played);
+      };
+      Video.prototype._timeline = function(location, duration, buffered, seekable) {
+        var begin, end, i, last, range, timeline, _i, _len, _results;
+        timeline = [];
+        last = null;
+        _results = [];
+        for (range = _i = 0, _len = buffered.length; _i < _len; range = ++_i) {
+          i = buffered[range];
+          begin = range[0];
+          end = range[1];
+          if (null !== last) {
+            timeline.push([begin - (begin - last), begin]);
+          } else {
+            timeline.push(range);
+            last = end;
+          }
+          _results.push(timeline);
+        }
+        return _results;
+      };
+      Video.prototype._callback = function(stack, args) {
+        var fn, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = stack.length; _i < _len; _i++) {
+          fn = stack[_i];
+          if ('function' === typeof fn) {
+            _results.push(fn.apply(this, args));
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
+      };
+      Video.prototype._iterateTimeRanges = function(obj) {
+        var collection, i, _b, _i, _len;
+        collection = [];
+        for (i = _i = 0, _len = obj.length; _i < _len; i = ++_i) {
+          _b = obj[i];
+          collection.push([obj.start(i), obj.end(i)]);
+        }
+        return collection;
       };
       Video.prototype.media = function() {
         return this.video;
@@ -108,8 +188,40 @@
           grid = createGrid(story.url);
           media = grid.sources();
           videos = media.videos;
-          that.video = new Video(videos[story.url]);
-          return console.log('video', video);
+          return that.video = new Video({
+            video: videos[story.url],
+            play: function() {
+              $('.tldr-button-play').hide();
+              return $('.tldr-button-pause').show();
+            },
+            pause: function() {
+              $('.tldr-button-play').hide();
+              return $('.tldr-button-pause').show();
+            },
+            stop: function() {
+              $('.tldr-button-play').show();
+              return $('.tldr-button-pause').hide();
+            },
+            progress: function(state) {
+              var complete;
+              complete = state.location / state.duration;
+              return console.log('progress', state, complete);
+              /*
+                            total_width = $( "#tldr-scrubber" ).outerWidth()
+                            if false is isNaN complete
+                              width = Math.floor( complete * total_width )
+                              $( "#tldr-scrubber-bar-left-loaded" ).css( 'width', Math.floor( width ) + 'px' )
+                              try
+                                end = video.buffered.end(0)
+                                loaded_pixels = end - width
+                                $("#tldr-scrubber-bar-right-loaded").width( loaded_pixels + 'px');
+                              catch error
+                                #TODO: do something
+                                #console.log( 'no buffering avail', error )
+              */
+
+            }
+          });
         });
         if (true === isEditing()) {
           return populateNarrative(id);
@@ -189,9 +301,7 @@
     return story;
   };
 
-  populateNarrative = function(id) {
-    return console.log('get narrative', id);
-  };
+  populateNarrative = function(id) {};
 
   if (Meteor.isClient) {
     isEditing = function() {
@@ -220,7 +330,6 @@
         },
         onmouseover: function(obj) {
           var api, hex;
-          console.log("mouseover", obj);
           api = obj.api;
           return hex = obj.data;
         },
@@ -294,7 +403,6 @@
       return doAnim(node, {
         'margin-right': '0px'
       }, function() {
-        console.log('nasty');
         return $('.tldr-button-media').removeClass('tldr-button-media').addClass('tldr-button-media-cancel').text('writingdisabled');
       });
     };
@@ -315,7 +423,6 @@
       return doAnim(node, {
         'margin-right': '0px'
       }, function() {
-        console.log('nasty');
         $('.tldr-button-settings').removeClass('tldr-button-settings').addClass('tldr-button-settings-cancel').text('checkmark').addClass('tldr-button-green');
         return $("#tldr-middle-content-panel").fadeIn();
       });
@@ -435,8 +542,20 @@
           Stories.update({
             _id: story['_id']
           }, story);
-          Session.set('story', story);
-          return console.log("BOOKMARK", story.narratives);
+          return Session.set('story', story);
+        }
+      });
+      Template.narrative.events({
+        "click .tldr-narrative-item": function(e) {
+          var el$, percentage;
+          el$ = $(e.target);
+          if (el$.hasClass('tldr-narrative-text' || el$.hasClass('tldr-narrative-icon'))) {
+            el$ = el$.parent();
+          }
+          percentage = el$.data('percentage');
+          return that.video.skip(percentage, function() {
+            return console.log('skip complete', percentage);
+          });
         }
       });
       Template.footer.events({
@@ -452,6 +571,9 @@
       });
       Template.narrative.pretty_timestamp = function() {
         return timestampToPrettyDate(this.location);
+      };
+      Template.narrative.percentage = function() {
+        return this.location / this.total;
       };
       Template.narratives.narratives = function() {
         if ('undefined' !== typeof Session.get('story')) {

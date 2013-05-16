@@ -670,8 +670,7 @@ if Meteor.isClient then window.Hexgrid = (->
 
 
   Public::video = (options) ->
-    console.log "vargs", options
-    return  if "undefined" is typeof options
+    if "undefined" is typeof options then return
     src = options.src
     xPt = options.x
     yPt = options.y
@@ -706,7 +705,6 @@ if Meteor.isClient then window.Hexgrid = (->
         video.appendChild source_el
         x += 1
       videos[src] = video
-    console.log "XXX", @media.context
     ctx = @media.context
     video = videos[src]
     x = undefined
