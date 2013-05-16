@@ -693,7 +693,6 @@
       };
       Public.prototype.video = function(options) {
         var api, args, clip, clipHeight, clipWidth, clipX, clipY, ctx, drawImage, height, source, source_el, sourcelen, sources, src, type, video, width, xPt, yPt;
-        console.log("vargs", options);
         if ("undefined" === typeof options) {
           return;
         }
@@ -735,7 +734,6 @@
           }
           videos[src] = video;
         }
-        console.log("XXX", this.media.context);
         ctx = this.media.context;
         video = videos[src];
         x = void 0;
